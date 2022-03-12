@@ -39,9 +39,9 @@ TRIGGER_WORDS = ['help', 'my chores', 'new chore']
 #list of scheduled chores
 SCHEDULED_CHORES = [
     {'text': 'First message', 'post_at': (
-        datetime.now() + timedelta(seconds=20)).timestamp(), 'channel': 'C036P73K3PX'},
+        datetime.now() + timedelta(seconds=40)).timestamp(), 'channel': 'C036P73K3PX'},
     {'text': 'Second Message!', 'post_at': (
-        datetime.now() + timedelta(seconds=30)).timestamp(), 'channel': 'C036P73K3PX'}
+        datetime.now() + timedelta(seconds=50)).timestamp(), 'channel': 'C036P73K3PX'}
 ]
 
 #welcome message/ instructions class
@@ -107,6 +107,16 @@ def send_welcome_message(channel, user):
     welcome.timestamp = response['ts']
 
     welcome_messages[channel][user] = welcome
+
+#lists scheduled chores
+def list_scheduled_messages(channel):
+    response = client.chat_scheduledMessages_list(channel=channel)
+    messages = response.data.get('scheduled_messages')
+    ids = []
+    for msg in messages:
+        ids.append(msg.get('id'))
+
+    return ids
 
 #schedules messages
 def schedule_messages(messages):
