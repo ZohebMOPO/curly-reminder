@@ -55,5 +55,5 @@ def add_chore():
     return Response(), 200
 
 #makes sure web server runs if done manually
-#if __name__ == "__main__":
-   # app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
