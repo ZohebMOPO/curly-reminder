@@ -31,6 +31,9 @@ add_chores = {}
 #welcome message recieved peeps
 welcome_messages = {}
 
+#Trigger words(help, my chores, new chore)
+TRIGGER_WORDS = ['help', 'my chores', 'new chore']
+
 #welcome message/ instructions class
 class WelcomeMessage:
     START_TEXT = {
@@ -39,7 +42,7 @@ class WelcomeMessage:
             'type': 'mrkdwn',
             'text': (
                 'Welcome to your tidying haven!\n I am ChoreChatter, your personal cleaning helper.'
-                '\n*Get started by using the chore-help command!*'
+                '\n*Get started by typing *help* for instructions!*'
             )
         }
 
