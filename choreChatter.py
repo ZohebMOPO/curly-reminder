@@ -4,6 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from flask import Flask, request, Response
 from slackeventsapi import SlackEventAdapter
+import time
 
 #load environment variable file
 env_path = Path('.') / '.env'
@@ -42,6 +43,17 @@ def message(payload):
         else:
             add_chores[user_id] = 1
         client.chat_postMessage(channel=channel_id, text=text)
+
+#schedules message
+def scheduleMessage(channel_id):
+    result = client.conversations_history(
+        channel=channel_id
+    )
+    message = result["messages"][-1]
+    timestamp = message["text"]
+    timestamp = timestamp * 60
+    time.sleep(timestamp)
+    client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
 
 #bot command listener
 @app.route('/add-chore', methods=['POST'])
