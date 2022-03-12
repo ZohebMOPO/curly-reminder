@@ -39,7 +39,7 @@ class WelcomeMessage:
             'type': 'mrkdwn',
             'text': (
                 'Welcome to your tidying haven!\n I am ChoreChatter, your personal cleaning helper.'
-                '*Get started by using the chore-help command!*'
+                '\n*Get started by using the chore-help command!*'
             )
         }
 
@@ -143,7 +143,7 @@ def add_chore():
     channel_id = data.get('channel_id')
     #makes sure user id is inside add_chore
     message_count = add_chores.get(user_id, 0)
-    
+
     client.chat_postMessage(channel=channel_id, text="loading...")
     client.chat_postMessage(channel=channel_id, text=f"Message: {message_count}")
     return Response(), 200
