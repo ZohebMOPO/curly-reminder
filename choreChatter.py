@@ -28,6 +28,8 @@ client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper 
 #counts number of messages
 add_chores = {}
 
+# stores the timestamp
+timestamp = []
 #bot recieves event, channel, and user info, and responds back
 @slack_event_adapter.on('message')
 def message(payload):
@@ -53,7 +55,9 @@ def scheduleMessage(channel_id):
     timestamp = message["text"]
     timestamp = timestamp * 60
     time.sleep(timestamp)
-    client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
+    response = client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
+    add_timestamp = response['message']['ts']
+    timestamp.append(add_timestamp)
 
 #list commands that we are gonna use
 def list_commands(channel_id):
@@ -64,6 +68,14 @@ def list_commands(channel_id):
 def list_chores(channel_id):
     text = add_chores['user_id']
     client.chat_postMessage(channel=channel_id, text=text)
+
+# delete a chore
+def delete_chore(channel_id, timestamp):
+    for time in timestamp:
+        try:
+            client.chat_delete(channel=channel_id, ts=time)
+        except Exception as e:
+            print(e)
 
 #bot command listener
 @app.route('/add-chore', methods=['POST'])
