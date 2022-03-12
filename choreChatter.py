@@ -4,6 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from flask import Flask, request, Response
 from slackeventsapi import SlackEventAdapter
+import time
 
 #load environment variable file
 env_path = Path('.') / '.env'
@@ -27,6 +28,8 @@ client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper 
 #counts number of messages
 add_chores = {}
 
+# stores the timestamp
+timestamp = []
 #bot recieves event, channel, and user info, and responds back
 @slack_event_adapter.on('message')
 def message(payload):
@@ -42,6 +45,37 @@ def message(payload):
         else:
             add_chores[user_id] = 1
         client.chat_postMessage(channel=channel_id, text=text)
+
+#schedules message
+def scheduleMessage(channel_id):
+    result = client.conversations_history(
+        channel=channel_id
+    )
+    message = result["messages"][-1]
+    timestamp = message["text"]
+    timestamp = timestamp * 60
+    time.sleep(timestamp)
+    response = client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
+    add_timestamp = response['message']['ts']
+    timestamp.append(add_timestamp)
+
+#list commands that we are gonna use
+def list_commands(channel_id):
+    text = "/add-chore <to add the chores you wanna do>"
+    client.chat_postMessage(channel=channel_id, text=text)
+
+# lists chores
+def list_chores(channel_id):
+    text = add_chores['user_id']
+    client.chat_postMessage(channel=channel_id, text=text)
+
+# delete a chore
+def delete_chore(channel_id, timestamp):
+    for time in timestamp:
+        try:
+            client.chat_delete(channel=channel_id, ts=time)
+        except Exception as e:
+            print(e)
 
 #bot command listener
 @app.route('/add-chore', methods=['POST'])
