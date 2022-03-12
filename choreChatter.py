@@ -52,6 +52,23 @@ class WelcomeMessage:
         self.timestamp =''
         self.completed = False
 
+    #return message to use welcome text
+    def get_message(self):
+        return {}
+
+    #asks for a reaction
+    def _get_reaction_task(self):
+        checkmark = ':white_check_mark:'
+        if not self.completed:
+            checkmark = ':white_large_square:'
+        
+        text = f'{checkmark} *React to this message!*'
+
+        return [{'type': 'section', 'text': {'type': 'mrkdwn', 'text': text}}]
+
+
+
+
 #bot recieves event, channel, and user info, and responds back
 @slack_event_adapter.on('message')
 def message(payload):
