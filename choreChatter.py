@@ -1,4 +1,5 @@
 from ssl import CHANNEL_BINDING_TYPES
+import string
 import slack
 import os
 from pathlib import Path
@@ -97,6 +98,13 @@ def send_welcome_message(channel, user):
     welcome.timestamp = response['ts']
 
     welcome_messages[channel][user] = welcome
+
+#checks for trigger words
+def check_if_bad_words(message):
+    msg = message.lower()
+    msg = msg.translate(str.maketrans('', '', string.punctuation))
+
+    return any(word in msg for word in TRIGGER_WORDS)
 
 
 #bot recieves event, channel, and user info, and responds back
