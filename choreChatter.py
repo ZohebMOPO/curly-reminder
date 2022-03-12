@@ -12,6 +12,9 @@ load_dotenv(dotenv_path=env_path)
 #configure flask; run on default port, automatically update web server
 app = Flask(__name__)
 
+#handles slack events
+slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'],'/slack/events', app)
+
 #load token value, pass as token(stores token through environment variable)
 client = slack.WebClient(token=os.environ['SLACK_TOKEN'])
 
