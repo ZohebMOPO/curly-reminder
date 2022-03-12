@@ -37,7 +37,7 @@ def message(payload):
         client.chat_postMessage(channel=channel_id, text=text)
 
 #bot command listener
-@app.route('/add-chore')
+@app.route('/add-chore', methods=['POST'])
 def add_chore():
     return Response(), 200
 
