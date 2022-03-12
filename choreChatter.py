@@ -42,7 +42,7 @@ def message(payload):
             add_chores[user_id] += 1
         else:
             add_chores[user_id] = 1
-        client.chat_postMessage(channel=channel_id, text=text)
+      #  client.chat_postMessage(channel=channel_id, text=text)
 
 #schedules message
 def scheduleMessage(channel_id):
