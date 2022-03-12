@@ -18,6 +18,9 @@ slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/ev
 #load token value, pass as token(stores token through environment variable)
 client = slack.WebClient(token=os.environ['SLACK_TOKEN'])
 
+#creates chore list
+myChores = []
+
 #gets bot id
 BOT_ID = client.api_call("auth.test")['user_id']
 
@@ -44,6 +47,9 @@ def add_chore():
     channel_id = data.get('channel_id')
     client.chat_postMessage(channel=channel_id, text="Here's to productivity! What's the name of your chore?")
      #scanner code that takes stdin and puts it in a list/dictionary
+    choreName = data.get('text')
+    myChores.append(choreName)
+    client.chat_postMessage(channel=channel_id, text="All done!")
     return Response(), 200
 
 #makes sure web server runs if done manually
