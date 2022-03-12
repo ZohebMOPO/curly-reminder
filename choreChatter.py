@@ -1,3 +1,4 @@
+from ssl import CHANNEL_BINDING_TYPES
 import slack
 import os
 from pathlib import Path
@@ -26,6 +27,30 @@ client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper 
 
 #counts number of messages
 add_chores = {}
+
+#welcome message/ instructions class
+class WelcomeMessage:
+    START_TEXT = {
+        'type': 'section',
+        'text': {
+            'type': 'mrkdwn',
+            'text': (
+                'Welcome to your tidying haven!\n I am ChoreChatter, your personal cleaning helper.'
+                '*Get started by using the chore-help command!*'
+            )
+        }
+
+    }
+
+    #divider
+    DIVIDER = {'type': 'divider'}
+
+    def __init__(self, channel, user):
+        self.channel = channel
+        self.user = user
+        self.icon_emoji = ':soap:'
+        self.timestamp =''
+        self.completed = False
 
 #bot recieves event, channel, and user info, and responds back
 @slack_event_adapter.on('message')
