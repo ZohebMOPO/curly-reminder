@@ -28,6 +28,9 @@ client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper 
 #counts number of messages
 add_chores = {}
 
+#welcome message recieved peeps
+welcome_message = {}
+
 #welcome message/ instructions class
 class WelcomeMessage:
     START_TEXT = {
