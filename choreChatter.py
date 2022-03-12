@@ -18,9 +18,6 @@ slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/ev
 #load token value, pass as token(stores token through environment variable)
 client = slack.WebClient(token=os.environ['SLACK_TOKEN'])
 
-#creates chore list
-myChores = []
-
 #gets bot id
 BOT_ID = client.api_call("auth.test")['user_id']
 
@@ -54,7 +51,7 @@ def add_chore():
     channel_id = data.get('channel_id')
     #makes sure user_id is inside add_chores
     add_chore = add_chores.get(user_id, 0)
-    client.chat_postMessage(channel=channel_id, text=f"Chore Count: {add_chores}")
+    client.chat_postMessage(channel=channel_id, text=f"ChoreCount: {add_chores}")
     return Response(), 200
 
 #makes sure web server runs if done manually
