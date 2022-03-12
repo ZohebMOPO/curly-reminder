@@ -39,7 +39,7 @@ def message(payload):
 #bot command listener
 @app.route('/add-chore')
 def add_chore():
-    return Response, 200
+    return Response(), 200
 
 #makes sure web server runs if done manually
 if __name__ == "__main__":
