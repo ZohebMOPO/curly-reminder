@@ -64,8 +64,6 @@ def add_chore():
     #makes sure user_id is inside add_chores
     add_chore = add_chores.get(user_id, 0)
     client.chat_postMessage(channel=channel_id, text=f"ChoreCount: {add_chores}")
-    return Response(), 200
+    scheduleMessage()
+    return Response(channel_id), 200
 
-#makes sure web server runs if done manually
-#if __name__ == "__main__":
-   # app.run(debug=True)
