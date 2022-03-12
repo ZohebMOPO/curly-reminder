@@ -18,10 +18,13 @@ slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/ev
 #load token value, pass as token(stores token through environment variable)
 client = slack.WebClient(token=os.environ['SLACK_TOKEN'])
 
+#gets bot id
+BOT_ID = client.api_call("auth.test")['user_id']
+
 #Bot posts message to specified chat
 client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper partner, Chore Chatter!")
 
-#chore chatter recieves event, channel, and user info, and responds back
+#bot recieves event, channel, and user info, and responds back
 @slack_event_adapter.on('message')
 def message(payload):
     event = payload.get('event', {})
