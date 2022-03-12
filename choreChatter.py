@@ -100,7 +100,7 @@ def send_welcome_message(channel, user):
     welcome_messages[channel][user] = welcome
 
 #checks for trigger words
-def check_if_bad_words(message):
+def check_if_trigger_words(message):
     msg = message.lower()
     msg = msg.translate(str.maketrans('', '', string.punctuation))
 
@@ -126,6 +126,11 @@ def message(payload):
         #starts welcome message
         if text.lower() == 'start':
             send_welcome_message(f'@{user_id}', user_id)
+        elif check_if_trigger_words(text):
+            ts = event.get('ts')
+            client.chat_postMessage(
+                channel=channel_id, thread_ts=ts, text="I can help! Please wait...")
+            
 
 #looks for reaction to welcome message and keeps track of user id
 @ slack_event_adapter.on('reaction_added')
