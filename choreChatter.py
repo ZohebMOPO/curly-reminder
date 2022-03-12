@@ -1,6 +1,6 @@
 import slack
 import os
-from pathlib import pathlib
+from pathlib import Path
 from dotenv import load_dotenv
 
 #load environment variable file
