@@ -39,9 +39,9 @@ TRIGGER_WORDS = ['help', 'my chores', 'new chore']
 #list of scheduled chores
 SCHEDULED_CHORES = [
     {'text': 'First message', 'post_at': (
-        datetime.now() + timedelta(seconds=20)).timestamp(), 'channel': 'channel_id'},
+        datetime.now() + timedelta(seconds=20)).timestamp(), 'channel': 'C036P73K3PX'},
     {'text': 'Second Message!', 'post_at': (
-        datetime.now() + timedelta(seconds=30)).timestamp(), 'channel': 'channel_id'}
+        datetime.now() + timedelta(seconds=30)).timestamp(), 'channel': 'C036P73K3PX'}
 ]
 
 #welcome message/ instructions class
@@ -187,6 +187,6 @@ def add_chore():
 #makes sure web server runs if done manually
 if __name__ == "__main__":
     schedule_messages(SCHEDULED_CHORES)
-    #ids = list_scheduled_messages('C01BXQNT598')
-    #delete_scheduled_messages(ids, 'C01BXQNT598')
+    #ids = list_scheduled_messages('C036P73K3PX')
+    #delete_scheduled_messages(ids, 'C036P73K3PX')
     app.run(debug=True)
