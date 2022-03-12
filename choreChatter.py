@@ -17,4 +17,6 @@ client = slack.WebClient(token=os.environ['SLACK_TOKEN'])
 #Bot posts message to specified chat
 client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper partner, Chore Chatter!")
 
-
+#running on default port + automatically update web server
+if __name__ == "__main__":
+    app.run(debug=True)
