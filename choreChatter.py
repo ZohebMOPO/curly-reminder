@@ -49,7 +49,7 @@ def add_chore():
      #scanner code that takes stdin and puts it in a list/dictionary
     choreName = data.get('text')
     myChores.append(choreName)
-    client.chat_postMessage(channel=channel_id, text="All done!")
+    client.chat_postMessage(channel=channel_id, text="All done! " + choreName + " has been added to your list.")
     return Response(), 200
 
 #makes sure web server runs if done manually
