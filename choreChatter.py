@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask, request, Response
 from slackeventsapi import SlackEventAdapter
 import time
+import datetime
 
 #load environment variable file
 env_path = Path('.') / '.env'
@@ -43,6 +44,30 @@ def message(payload):
         else:
             add_chores[user_id] = 1
       #  client.chat_postMessage(channel=channel_id, text=text)
+
+
+#api code
+# Create a timestamp for tomorrow at 9AM
+tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+scheduled_time = datetime.time(hour=9, minute=30)
+schedule_timestamp = datetime.datetime.combine(tomorrow, scheduled_time).strftime('%s')
+
+# Channel you want to post message to
+channel_id = "C12345"
+
+try:
+    # Call the chat.scheduleMessage method using the WebClient
+    result = client.chat_scheduleMessage(
+        channel=channel_id,
+        text="Looking towards the future",
+        post_at=schedule_timestamp
+    )
+    # Log the result
+    logger.info(result)
+
+except SlackApiError as e:
+    logger.error("Error scheduling message: {}".format(e))
+ #end of api code
 
 #schedules message
 def scheduleMessage(channel_id):
