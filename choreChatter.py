@@ -13,13 +13,22 @@ load_dotenv(dotenv_path=env_path)
 app = Flask(__name__)
 
 #handles slack events
-slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'],'/slack/events', app)
+slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/events', app)
 
 #load token value, pass as token(stores token through environment variable)
 client = slack.WebClient(token=os.environ['SLACK_TOKEN'])
 
 #Bot posts message to specified chat
 client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper partner, Chore Chatter!")
+
+#chore chatter recieves event, channel, and user info, and responds back
+@slack_event_adapter.on('message')
+def message(payload):
+    event = payload.get('event', {})
+    channel_id = event.get('channel')
+    user_id = event.get('user')
+    text = event.get('text')
+    client.chat_postMessage(channel=channel_id, text=text)
 
 #makes sure web server runs if done manually
 if __name__ == "__main__":
