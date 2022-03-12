@@ -46,10 +46,6 @@ def add_chore():
     user_id = data.get('user_id')
     channel_id = data.get('channel_id')
     client.chat_postMessage(channel=channel_id, text="Here's to productivity! What's the name of your chore?")
-     #scanner code that takes stdin and puts it in a list/dictionary
-    choreName = data.get('text')
-    myChores.append(choreName)
-    client.chat_postMessage(channel=channel_id, text="All done! " + choreName + " has been added to your list.")
     return Response(), 200
 
 #makes sure web server runs if done manually
