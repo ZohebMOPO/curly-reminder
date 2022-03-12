@@ -88,12 +88,15 @@ def message(payload):
     text = event.get('text')
 
 #makes sure bot does not respond to itself
-    if BOT_ID != user_id:
+    if user_id != None and BOT_ID != user_id:
         #looks for user id to update counter
         if user_id in add_chores:
              add_chores[user_id] += 1
         else:
             add_chores[user_id] = 1
+        
+        #starts welcome message
+        if text.lower() == 'start':
         
 
 
