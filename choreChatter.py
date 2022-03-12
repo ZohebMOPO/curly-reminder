@@ -24,8 +24,7 @@ BOT_ID = client.api_call("auth.test")['user_id']
 #Bot posts message to specified chat
 client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper partner, Chore Chatter!")
 
-#counts number of messages
-add_chores = {}
+
 
 #bot recieves event, channel, and user info, and responds back
 @slack_event_adapter.on('message')
@@ -43,15 +42,14 @@ def message(payload):
             add_chores[user_id] = 1
         client.chat_postMessage(channel=channel_id, text=text)
 
+#counts number of messages
+add_chores = {}
+
 #bot command listener
 @app.route('/add-chore', methods=['POST'])
 def add_chore():
     data = request.form
-    user_id = data.get('user_id')
-    channel_id = data.get('channel_id')
-    #makes sure user_id is inside add_chores
-    add_chore = add_chores.get(user_id, 0)
-    client.chat_postMessage(channel=channel_id, text=f"ChoreCount: {add_chores}")
+    print(data)
     return Response(), 200
 
 #makes sure web server runs if done manually
