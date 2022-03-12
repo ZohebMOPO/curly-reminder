@@ -29,7 +29,7 @@ client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper 
 add_chores = {}
 
 #welcome message recieved peeps
-welcome_message = {}
+welcome_messages = {}
 
 #welcome message/ instructions class
 class WelcomeMessage:
@@ -48,9 +48,8 @@ class WelcomeMessage:
     #divider
     DIVIDER = {'type': 'divider'}
 
-    def __init__(self, channel, user):
+    def __init__(self, channel):
         self.channel = channel
-        self.user = user
         self.icon_emoji = ':soap:'
         self.timestamp =''
         self.completed = False
@@ -77,16 +76,25 @@ class WelcomeMessage:
         
         text = f'{checkmark} *React to this message!*'
 
-        return [{'type': 'section', 'text': {'type': 'mrkdwn', 'text': text}}]
+        return {'type': 'section', 'text': {'type': 'mrkdwn', 'text': text}}
 
 
 
 #bot keeps track of welcome messages for updates
 def send_welcome_message(channel, user):
-    welcome = WelcomeMessage(channel, user)
+    if channel not in welcome_messages:
+        welcome_messages[channel] = {}
+
+    if user in welcome_messages[channel]:
+        return
+
+    welcome = WelcomeMessage(channel)
     message = welcome.get_message()
     response = client.chat_postMessage(**message)
     welcome.timestamp = response['ts']
+
+    welcome_messages[channel][user] = welcome
+
 
 #bot recieves event, channel, and user info, and responds back
 @slack_event_adapter.on('message')
@@ -106,6 +114,24 @@ def message(payload):
         
         #starts welcome message
         if text.lower() == 'start':
+            send_welcome_message(f'@{user_id}', user_id)
+
+#looks for reaction to welcome message and keeps track of user id
+@ slack_event_adapter.on('reaction_added')
+def reaction(payload):
+    event = payload.get('event', {})
+    channel_id = event.get('item', {}).get('channel')
+    user_id = event.get('user')
+
+    if f'@{user_id}' not in welcome_messages:
+        return
+
+    welcome = welcome_messages[f'@{user_id}'][user_id]
+    welcome.completed = True
+    welcome.channel = channel_id
+    message = welcome.get_message()
+    updated_message = client.chat_update(**message)
+    welcome.timestamp = updated_message['ts']
         
 
 
@@ -117,6 +143,7 @@ def add_chore():
     channel_id = data.get('channel_id')
     #makes sure user id is inside add_chore
     message_count = add_chores.get(user_id, 0)
+    
     client.chat_postMessage(channel=channel_id, text="loading...")
     client.chat_postMessage(channel=channel_id, text=f"Message: {message_count}")
     return Response(), 200
