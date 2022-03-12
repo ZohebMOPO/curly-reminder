@@ -108,6 +108,17 @@ def send_welcome_message(channel, user):
 
     welcome_messages[channel][user] = welcome
 
+#schedules messages
+def schedule_messages(messages):
+    ids = []
+    for msg in messages:
+        response = client.chat_scheduleMessage(
+            channel=msg['channel'], text=msg['text'], post_at=msg['post_at']).data
+        id_ = response.get('scheduled_message_id')
+        ids.append(id_)
+
+    return ids
+
 #checks for trigger words
 def check_if_trigger_words(message):
     msg = message.lower()
