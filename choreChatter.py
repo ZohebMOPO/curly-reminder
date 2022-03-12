@@ -52,8 +52,10 @@ def add_chore():
     data = request.form
     user_id = data.get('user_id')
     channel_id = data.get('channel_id')
+    #makes sure user id is insideadd_chore
+    message_count = add_chores.get(user_id, 0)
     client.chat_postMessage(channel=channel_id, text="loading...")
-    return Response(), 200
+    client.chat_postMessage(channel=channel_id, text=f"Message: {message_count}")return Response(), 200
 
 #makes sure web server runs if done manually
 if __name__ == "__main__":
