@@ -15,6 +15,7 @@ load_dotenv(dotenv_path=env_path)
 #configure flask; run on default port, automatically update web server
 app = Flask(__name__)
 
+
 #handles slack events
 slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/events', app)
 
@@ -36,10 +37,28 @@ channel_id = data.get('channel_id')
 
 # list of scheduled chores(schedule message funct)
 MY_CHORES = [
-    {'name': 'First message', 'post_at': (datetime.now() + timedelta(seconds=10)).timestamp(), 'channel': channel_id},
-    {'name': 'Second message!', 'post_at': (datetime.now() + timedelta(seconds=20)).timestamp(), 'channel': channel_id}
+    {'name': 'First chore', 'post_at': (datetime.now() + timedelta(seconds=20)).timestamp(), 'channel': channel_id},
+    {'name': 'Second chore!', 'post_at': (datetime.now() + timedelta(seconds=30)).timestamp(), 'channel': channel_id}
 ]
     
+#schedules message (schedule message funct)
+def scheduleMessage(message):
+    ids = []
+    for msg in message:
+        response = client.chat_scheduleMessage(channel=msg['channel'], text=msg['text'], post_at=msg['post_at'])
+        id_ = response.get('id')
+        ids.append(id_)
+
+        return ids
+       # result = client.conversations_history(
+       # channel=channel_id)
+    
+  #  message = result["messages"][-1]
+   # timestamp = message["text"]
+    #timestamp = timestamp * 60
+    #time.sleep(timestamp)
+    #client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
+
 
 #bot recieves event, channel, and user info, and responds back
 @slack_event_adapter.on('message')
@@ -57,16 +76,6 @@ def message(payload):
             add_chores[user_id] = 1
       #  client.chat_postMessage(channel=channel_id, text=text)
 
-#schedules message
-def scheduleMessage(channel_id):
-    result = client.conversations_history(
-        channel=channel_id
-    )
-    message = result["messages"][-1]
-    timestamp = message["text"]
-    timestamp = timestamp * 60
-    time.sleep(timestamp)
-    client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
 
 #bot command listener
 @app.route('/add-chore', methods=['POST'])
