@@ -30,10 +30,14 @@ client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper 
 #counts number of messages
 add_chores = {}
 
-#list of scheduled chores
+#Gets current channel id(schedule message funct)
+data = request.form
+channel_id = data.get('channel_id')
+
+# list of scheduled chores(schedule message funct)
 MY_CHORES = [
-    {'name': 'First message', 'post_at': (datetime.now() + timedelta(seconds=10)).timestamp(), 'channel': },
-    {'name': 'Second message!', 'post_at': (datetime.now() + timedelta(seconds=20)).timestamp(), 'channel': }
+    {'name': 'First message', 'post_at': (datetime.now() + timedelta(seconds=10)).timestamp(), 'channel': channel_id},
+    {'name': 'Second message!', 'post_at': (datetime.now() + timedelta(seconds=20)).timestamp(), 'channel': channel_id}
 ]
     
 
