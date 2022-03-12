@@ -55,6 +55,11 @@ def scheduleMessage(channel_id):
     time.sleep(timestamp)
     client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
 
+#list commands that we are gonna use
+def list_commands(channel_id):
+    text = "/add-chore <to add the chores you wanna do>"
+    client.chat_postMessage(channel=channel_id, text=text)
+
 #bot command listener
 @app.route('/add-chore', methods=['POST'])
 def add_chore():
