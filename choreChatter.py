@@ -54,7 +54,17 @@ class WelcomeMessage:
 
     #return message to use welcome text
     def get_message(self):
-        return {}
+        return {
+            'ts': self.timestamp,
+            'channel': self.channel,
+            'username': 'Welcome!',
+            'icon_emoji': self.icon_emoji,
+            'blocks': [
+                self.START_TEXT,
+                self.DIVIDER,
+                self._get_reaction_task()
+                ]
+        }
 
     #asks for a reaction
     def _get_reaction_task(self):
