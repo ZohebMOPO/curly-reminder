@@ -37,12 +37,13 @@ welcome_messages = {}
 TRIGGER_WORDS = ['help', 'my chores', 'new chore']
 
 #list of scheduled chores
-SCHEDULED_CHORES = [
-    {'text': 'First message', 'post_at': (
-        datetime.now() + timedelta(seconds=40)).timestamp(), 'channel': 'C036P73K3PX'},
-    {'text': 'Second Message!', 'post_at': (
-        datetime.now() + timedelta(seconds=50)).timestamp(), 'channel': 'C036P73K3PX'}
+SCHEDULED_MESSAGES = [
+    {'text': 'First message','post_at': (datetime.now() + timedelta(seconds=20)).timestamp(),'channel': 'C036P73K3PX'},
+    {'text': 'Second message','post_at': (datetime.now() + timedelta(seconds=30)).timestamp() ,'channel': 'C036P73K3PX'}
+
 ]
+
+
 
 #welcome message/ instructions class
 class WelcomeMessage:
@@ -109,25 +110,24 @@ def send_welcome_message(channel, user):
     welcome_messages[channel][user] = welcome
 
 #lists scheduled chores
-def list_scheduled_messages(channel):
-    response = client.chat_scheduledMessages_list(channel=channel)
-    messages = response.data.get('scheduled_messages')
-    ids = []
-    for msg in messages:
-        ids.append(msg.get('id'))
 
-    return ids
 
 #schedules messages
 def schedule_messages(messages):
     ids = []
     for msg in messages:
-        response = client.chat_scheduleMessage(
-            channel=msg['channel'], text=msg['text'], post_at=msg['post_at']).data
-        id_ = response.get('scheduled_message_id')
-        ids.append(id_)
+        response = client.chat_scheduleMessage(channel=msg['channel'], text=msg['text'], post_at=msg['post_at'])
+    id_ = response.get('id')
+    ids.append(id_)
 
-    return ids
+#deletes scheduled message
+def delete_scheduled_messages(ids, channel):
+    for _id in ids:
+        try:
+            client.chat_deleteScheduledMessage(
+                channel=channel, scheduled_message_id=_id)
+        except Exception as e:
+            print(e)
 
 #checks for trigger words
 def check_if_trigger_words(message):
@@ -196,7 +196,5 @@ def add_chore():
 
 #makes sure web server runs if done manually
 if __name__ == "__main__":
-    schedule_messages(SCHEDULED_CHORES)
-    #ids = list_scheduled_messages('C036P73K3PX')
-    #delete_scheduled_messages(ids, 'C036P73K3PX')
+    schedule_messages(SCHEDULED_MESSAGES)
     app.run(debug=True)
