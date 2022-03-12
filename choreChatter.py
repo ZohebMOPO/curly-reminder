@@ -60,6 +60,11 @@ def list_commands(channel_id):
     text = "/add-chore <to add the chores you wanna do>"
     client.chat_postMessage(channel=channel_id, text=text)
 
+# lists chores
+def list_chores(channel_id):
+    text = add_chores['user_id']
+    client.chat_postMessage(channel=channel_id, text=text)
+
 #bot command listener
 @app.route('/add-chore', methods=['POST'])
 def add_chore():
