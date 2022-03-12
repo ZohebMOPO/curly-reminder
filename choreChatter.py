@@ -36,6 +36,7 @@ def message(payload):
 
     #makes sure bot does not respond to itself
     if BOT_ID != user_id:
+        #looks for user id to update counter
         if user_id in add_chores:
             add_chores[user_id] += 1
         else:
@@ -49,7 +50,9 @@ add_chores = {}
 @app.route('/add-chore', methods=['POST'])
 def add_chore():
     data = request.form
-    print(data)
+    user_id = data.get('user_id')
+    channel_id = data.get('channel_id')
+    client.chat_postMessage(channel=channel_id, text="loading...")
     return Response(), 200
 
 #makes sure web server runs if done manually
