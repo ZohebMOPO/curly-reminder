@@ -78,6 +78,12 @@ class WelcomeMessage:
 
 
 
+#bot keeps track of welcome messages for updates
+def send_welcome_message(channel, user):
+    welcome = WelcomeMessage(channel, user)
+    message = welcome.get_message()
+    response = client.chat_postMessage(**message)
+    welcome.timestamp = response['ts']
 
 #bot recieves event, channel, and user info, and responds back
 @slack_event_adapter.on('message')
