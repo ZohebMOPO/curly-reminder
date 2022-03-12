@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from flask import Flask
+from slackeventsapi import SlackEventAdapter
 
 #load environment variable file
 env_path = Path('.') / '.env'
