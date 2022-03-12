@@ -31,7 +31,10 @@ def message(payload):
     channel_id = event.get('channel')
     user_id = event.get('user')
     text = event.get('text')
-    client.chat_postMessage(channel=channel_id, text=text)
+
+    #makes sure bot does not respond to itself
+    if BOT_ID != user_id:
+        client.chat_postMessage(channel=channel_id, text=text)
 
 #makes sure web server runs if done manually
 if __name__ == "__main__":
