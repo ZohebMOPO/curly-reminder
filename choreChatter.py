@@ -31,33 +31,22 @@ client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper 
 #counts number of messages
 add_chores = {}
 
-#Gets current channel id(schedule message funct)
-data = request.form
-channel_id = data.get('channel_id')
+
 
 # list of scheduled chores(schedule message funct)
-MY_CHORES = [
-    {'name': 'First chore', 'post_at': (datetime.now() + timedelta(seconds=20)).timestamp(), 'channel': channel_id},
-    {'name': 'Second chore!', 'post_at': (datetime.now() + timedelta(seconds=30)).timestamp(), 'channel': channel_id}
-]
+MY_CHORES = []
     
 #schedules message (schedule message funct)
-def scheduleMessage(message):
-    ids = []
-    for msg in message:
-        response = client.chat_scheduleMessage(channel=msg['channel'], text=msg['text'], post_at=msg['post_at'])
-        id_ = response.get('id')
-        ids.append(id_)
+def scheduleMessage(channel_id):
+    result = client.conversations_history(
+        channel=channel_id
+    )
+    message = result["messages"][-1]
+    timestamp = message["text"]
+    timestamp = timestamp * 60
+    time.sleep(timestamp)
+    client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
 
-        return ids
-       # result = client.conversations_history(
-       # channel=channel_id)
-    
-  #  message = result["messages"][-1]
-   # timestamp = message["text"]
-    #timestamp = timestamp * 60
-    #time.sleep(timestamp)
-    #client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
 
 
 #bot recieves event, channel, and user info, and responds back
