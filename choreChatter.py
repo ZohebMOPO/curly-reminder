@@ -186,4 +186,7 @@ def add_chore():
 
 #makes sure web server runs if done manually
 if __name__ == "__main__":
+     schedule_messages(SCHEDULED_CHORES)
+    #ids = list_scheduled_messages('C01BXQNT598')
+    #delete_scheduled_messages(ids, 'C01BXQNT598')
     app.run(debug=True)
