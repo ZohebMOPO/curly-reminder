@@ -2,7 +2,7 @@ import slack
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, request, Response
 from slackeventsapi import SlackEventAdapter
 
 #load environment variable file
@@ -35,6 +35,11 @@ def message(payload):
     #makes sure bot does not respond to itself
     if BOT_ID != user_id:
         client.chat_postMessage(channel=channel_id, text=text)
+
+#bot command listener
+@app.route('/add-chore')
+def add_chore():
+    return Response, 200
 
 #makes sure web server runs if done manually
 if __name__ == "__main__":
