@@ -6,6 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from flask import Flask, request, Response
 from slackeventsapi import SlackEventAdapter
+from datetime import datetime, timedelta
 
 #load environment variable file
 env_path = Path('.') / '.env'
@@ -34,6 +35,14 @@ welcome_messages = {}
 
 #Trigger words(help, my chores, new chore)
 TRIGGER_WORDS = ['help', 'my chores', 'new chore']
+
+#list of scheduled chores
+SCHEDULED_CHORES = [
+    {'text': 'First message', 'post_at': (
+        datetime.now() + timedelta(seconds=20)).timestamp(), 'channel': 'channel_id'},
+    {'text': 'Second Message!', 'post_at': (
+        datetime.now() + timedelta(seconds=30)).timestamp(), 'channel': 'channel_id'}
+]
 
 #welcome message/ instructions class
 class WelcomeMessage:
