@@ -36,16 +36,7 @@ add_chores = {}
 # list of scheduled chores(schedule message funct)
 MY_CHORES = []
     
-#schedules message (schedule message funct)
-def scheduleMessage(channel_id):
-    result = client.conversations_history(
-        channel=channel_id
-    )
-    message = result["messages"][-1]
-    timestamp = message["text"]
-    timestamp = timestamp * 60
-    time.sleep(timestamp)
-    client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
+
 
 
 
@@ -77,6 +68,17 @@ def add_chore():
     #print text for adding chore name
     #data.get(whatever was inputted)
     client.chat_postMessage(channel=channel_id, text=f"ChoreCount: {add_chores}")
-    scheduleMessage()
+    scheduleMessage(channel_id)
     return Response(channel_id), 200
+
+    #schedules message (schedule message funct)
+def scheduleMessage(channel_id):
+    result = client.conversations_history(
+        channel=channel_id
+    )
+    message = result["messages"][-1]
+    timestamp = message["text"]
+    timestamp = timestamp * 60
+    time.sleep(timestamp)
+    client.chat_postMessage(channel=channel_id, text="This is your reminder for the next chore")
 
