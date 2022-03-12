@@ -4,6 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from flask import Flask, request, Response
 from slackeventsapi import SlackEventAdapter
+from datetime import datetime, timedelta
 import time
 
 
@@ -28,6 +29,13 @@ client.chat_postMessage(channel='#tidy-up', text="Hello! I'm your cleaner-upper 
 
 #counts number of messages
 add_chores = {}
+
+#list of scheduled chores
+MY_CHORES = [
+    {'name': 'First message', 'post_at': (datetime.now() + timedelta(seconds=10)).timestamp(), 'channel': },
+    {'name': 'Second message!', 'post_at': (datetime.now() + timedelta(seconds=20)).timestamp(), 'channel': }
+]
+    
 
 #bot recieves event, channel, and user info, and responds back
 @slack_event_adapter.on('message')
