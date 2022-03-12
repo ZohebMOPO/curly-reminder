@@ -5,8 +5,6 @@ from dotenv import load_dotenv
 from flask import Flask, request, Response
 from slackeventsapi import SlackEventAdapter
 import time
-import datetime
-import logging
 
 
 #load environment variable file
@@ -66,6 +64,8 @@ def add_chore():
     channel_id = data.get('channel_id')
     #makes sure user_id is inside add_chores
     add_chore = add_chores.get(user_id, 0)
+    #print text for adding chore name
+    #data.get(whatever was inputted)
     client.chat_postMessage(channel=channel_id, text=f"ChoreCount: {add_chores}")
     scheduleMessage()
     return Response(channel_id), 200
