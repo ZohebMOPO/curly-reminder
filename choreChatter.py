@@ -36,12 +36,6 @@ welcome_messages = {}
 #Trigger words(help, my chores, new chore)
 TRIGGER_WORDS = ['help', 'my chores', 'new chore']
 
-#list of scheduled chores
-SCHEDULED_MESSAGES = [
-    {'text': 'First message','post_at': (datetime.now() + timedelta(seconds=20)).timestamp(),'channel': 'C036P73K3PX'},
-    {'text': 'Second message','post_at': (datetime.now() + timedelta(seconds=30)).timestamp() ,'channel': 'C036P73K3PX'}
-
-]
 
 
 
@@ -109,25 +103,9 @@ def send_welcome_message(channel, user):
 
     welcome_messages[channel][user] = welcome
 
-#lists scheduled chores
 
 
-#schedules messages
-def schedule_messages(messages):
-    ids = []
-    for msg in messages:
-        response = client.chat_scheduleMessage(channel=msg['channel'], text=msg['text'], post_at=msg['post_at'])
-    id_ = response.get('id')
-    ids.append(id_)
 
-#deletes scheduled message
-def delete_scheduled_messages(ids, channel):
-    for _id in ids:
-        try:
-            client.chat_deleteScheduledMessage(
-                channel=channel, scheduled_message_id=_id)
-        except Exception as e:
-            print(e)
 
 #checks for trigger words
 def check_if_trigger_words(message):
@@ -196,5 +174,4 @@ def add_chore():
 
 #makes sure web server runs if done manually
 if __name__ == "__main__":
-    schedule_messages(SCHEDULED_MESSAGES)
     app.run(debug=True)
