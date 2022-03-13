@@ -36,6 +36,9 @@ welcome_messages = {}
 #Trigger words(help, my chores, new chore)
 TRIGGER_WORDS = ['help', 'my chores', 'new chore']
 
+#chore list
+my_chores = []
+
 
 
 
@@ -135,9 +138,36 @@ def message(payload):
         if text.lower() == 'start':
             send_welcome_message(f'@{user_id}', user_id)
         elif check_if_trigger_words(text):
+            trig = text
             ts = event.get('ts')
-            client.chat_postMessage(
-                channel=channel_id, thread_ts=ts, text="I can help! Please wait...")
+
+            if(trig == TRIGGER_WORDS[0]):
+                client.chat_postMessage(
+                channel=channel_id, thread_ts=ts, text="Confused, I see. No worries! Here's how to use me to full functionality.\n I see you already know *help*, but there's also *my chores*, where you can see all your saved chores, and *new chore*, where you can add a new chore to your chore list.\n Go ahead, try one!")
+            elif(trig == TRIGGER_WORDS[1]):
+               if(len(my_chores)==0):
+                   client.chat_postMessage(
+                    channel=channel_id, thread_ts=ts, text="You have no chores right now! To add a new chore, ask me to *new chore*")
+               else:
+                    for chore in my_chores:
+                        client.chat_postMessage(
+                         channel=channel_id, thread_ts=ts, text=chore)
+            elif(trig == TRIGGER_WORDS[2]):
+                client.chat_postMessage(
+                channel=channel_id, thread_ts=ts, text="Yay, productivity! Quick, enter the name of your chore.")
+                my_chores.append(text.lower())
+                client.chat_postMessage(
+                channel=channel_id, thread_ts=ts, text="Done? Anything else?")
+                if(text.lower() == 'no'):
+                    client.chat_postMessage(
+                    channel=channel_id, thread_ts=ts, text="Got it! Until next time, tidy friend!")
+            else:
+                client.chat_postMessage(
+                channel=channel_id, thread_ts=ts, text="These aren't one of my commands, but you've piqued my interest. Want to start some cleaning with me? ask for *help* for the full list of instructions.")
+            
+
+
+            
             
 
 #looks for reaction to welcome message and keeps track of user id
